@@ -7,7 +7,7 @@ TASK TO DO
 3. create function that takes key, and generate random value for string (can be get)
 4. create x element according to how x elemenbt of random string
 5. main needs to print how long the scripts took to run
-6. Method is generating a random word - GET, call get, parsing a key, sending back a garbage character
+6. Method is generating a random word - GET, call get, parsing a key, sending back a printable garbage character
 
 
 Other Stuff Jon said:
