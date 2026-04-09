@@ -31,6 +31,11 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 	clock_t start = clock();
 
+	if (atoi(argv[2]))
+		printf("cache on\n");
+	else
+		printf("cache off\n");
+
 	while (i < atoi(argv[1]))
 	{
 		printf("str == %s\n", get_data("five"));
