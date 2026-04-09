@@ -1,6 +1,6 @@
-#H1 README
+# README
 
-## H2 TASK TO DO
+## TASK TO DO
 
 1. At the beginning, print out cache on / off 0 print 1
 2. MAIN NEEDS TO LOOP, as amuch as 1st parameter
