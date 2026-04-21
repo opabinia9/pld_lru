@@ -17,10 +17,10 @@ $(MAIN_TARGET): $(SRC_DIR)/main.c $(SRC_DIR)/dlist.c $(SRC_DIR)/hashtable.c
 	$(CC) $(CFLAGS) $^ -o app
 
 $(DLIST_TARGET): $(TEST_DIR)/test.c $(TEST_DIR)/test_dlist.c $(SRC_DIR)/dlist.c 
-	$(CC) $(CFLAGS) $^ -o dlist_test
+	$(CC) $(CFLAGS) $^ -o $@
 
 $(HASHTABLE_TARGET): $(TEST_DIR)/test.c $(TEST_DIR)/test_hashtable.c $(SRC_DIR)/hashtable.c
-	$(CC) $(CFLAGS) $^ -o hash_test
+	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
 	$(RM) $(MAIN_TARGET) $(DLIST_TARGET) $(HASHTABLE_TARGET)
