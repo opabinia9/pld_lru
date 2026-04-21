@@ -11,7 +11,7 @@ HASHTABLE_TARGET = hashtable_test
 
 all: $(MAIN_TARGET) tests
 
-tests: $(DLIST_TARGET) $(HASH_TABLE_TARGET)
+tests: $(DLIST_TARGET) $(HASHTABLE_TARGET)
 
 $(MAIN_TARGET): $(SRC_DIR)/main.c $(SRC_DIR)/dlist.c $(SRC_DIR)/hashtable.c
 	$(CC) $(CFLAGS) $^ -o app
