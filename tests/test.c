@@ -1,6 +1,6 @@
 #include "test.h"
 
-FILE *capture_stdout_to_file(print3_func_t f, void *param)
+FILE *capture_stdout_to_file(print_func_t f, void *param)
 {
 	FILE *tmp = tmpfile();
 	int stdout_fd;
@@ -45,7 +45,7 @@ char *copy_file_to_buffer(FILE *tmp)
 	return (buf);
 }
 
-int valid_dlist_output_match(char *label, char *expected_output, print_func_t f, dlistint_t *param)
+int valid_dlist_output_match(char *label, char *expected_output, print_func_t2 f, dliststr_t *param)
 {
 	static int counter = 0;
 	int match = 0;
@@ -54,7 +54,7 @@ int valid_dlist_output_match(char *label, char *expected_output, print_func_t f,
 
 	fflush(stdout); 
 
-	tmp = capture_stdout_to_file((print3_func_t)f, (void *)param);
+	tmp = capture_stdout_to_file((print_func_t)f, (void *)param);
 	if (!tmp)
 	{
 		return (-1);
@@ -87,7 +87,7 @@ int valid_dlist_output_match(char *label, char *expected_output, print_func_t f,
 }
 
 
-int valid_hashtable_output_match(char *label, char *expected_output, print2_func_t f, hash_table_t *param)
+int valid_hashtable_output_match(char *label, char *expected_output, print_func_t3 f, hash_table_t *param)
 {
 	static int counter = 0;
 	int match = 0;
@@ -96,7 +96,7 @@ int valid_hashtable_output_match(char *label, char *expected_output, print2_func
 
 	fflush(stdout);
 
-	tmp = capture_stdout_to_file((print3_func_t)f, (void *)param);
+	tmp = capture_stdout_to_file((print_func_t)f, (void *)param);
 	if (!tmp)
 	{
 	 	return (-1);
@@ -112,6 +112,49 @@ int valid_hashtable_output_match(char *label, char *expected_output, print2_func
 
 	counter = counter + 1;
 	printf("****\t[ HASHTABLE ]Test number: %d\t****\n", counter);
+	printf("%s\n", label);
+	if (match == 1)
+	{
+	 	printf("****\tSuccess! Result: %d\t****\n", match);
+	}
+	else
+	{
+		printf("/!\\++++\tFailed! Result: %d\t++++/!\\\t\n", match);
+		printf("/!\\++++\tReceived: %s\t++++/!\\\t\n", buf);
+		printf("/!\\++++\tExpected: %s\t++++/!\\\t\n", expected_output);
+	}
+	fflush(stdout);
+
+	free(buf);
+	fclose(tmp);
+    return (match);
+}
+
+int valid_lru_output_match(char *label, char *expected_output, print_func_t4 f, lru_t *param)
+{
+	static int counter = 0;
+	int match = 0;
+	char *buf;
+	FILE *tmp;
+
+	fflush(stdout);
+
+	tmp = capture_stdout_to_file((print_func_t)f, (void *)param);
+	if (!tmp)
+	{
+	 	return (-1);
+	}
+    
+    buf = copy_file_to_buffer(tmp);
+    if (!buf)
+	{
+		return (-1);
+	}
+
+	match = (strcmp(buf, expected_output) == 0);
+
+	counter = counter + 1;
+	printf("****\t[ LRU ]Test number: %d\t****\n", counter);
 	printf("%s\n", label);
 	if (match == 1)
 	{

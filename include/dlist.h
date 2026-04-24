@@ -1,6 +1,8 @@
 #ifndef __DLIST_H__
 #define __DLIST_H__
 
+#include <stdlib.h>
+
 /**
  * struct dlistint_s - doubly linked list
  * @n: integer
@@ -10,26 +12,26 @@
  * Description: doubly linked list node structure
  * 
  */
-typedef struct dlistint_node_s
+typedef struct dliststr_node_s
 {
-    int n;
-    struct dlistint_node_s *prev;
-    struct dlistint_node_s *next;
-}	dlistint_node_t;
+	char *key;
+    char *value;
+    struct dliststr_node_s *prev;
+    struct dliststr_node_s *next;
+}	dliststr_node_t;
 
-typedef struct dlistint_s
+typedef struct dliststr_s
 {
 	size_t length;
-	struct dlistint_node_s *head;
-}	dlistint_t;
+	dliststr_node_t *head;
+}	dliststr_t;
 
-size_t print_dlistint(dlistint_t *list);
-size_t rev_print_dlistint(dlistint_t *list);
-dlistint_node_t *add_dnodeint(dlistint_t *list, const int n);
-int delete_dnodeint_at_index(dlistint_t *list, unsigned int index);
-void delete_last_dnodeint(dlistint_t *list);
-void move_dnodeint_to_front(dlistint_t *list, dlistint_node_t *node);
-
-#define MAX_LENGTH 5
+void print_dliststr(dliststr_t *list);
+void rev_print_dliststr(dliststr_t *list);
+dliststr_node_t *add_dnodestr_in_front(dliststr_t *list, char *key, char *value);
+int delete_dnodestr_at_index(dliststr_t *list, unsigned int index);
+void delete_last_dnodestr(dliststr_t *list);
+void move_dnodestr_to_front(dliststr_t *list, dliststr_node_t *node);
+dliststr_node_t *create_node(char *key, char *value);
 
 #endif

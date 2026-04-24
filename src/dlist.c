@@ -3,40 +3,57 @@
 #include <stdio.h>
 #include "dlist.h"
 
-size_t print_dlistint(dlistint_t *list)
+dliststr_node_t *create_node(char *key, char *value)
+{
+	dliststr_node_t *new_node;
+
+	new_node = malloc(sizeof(*new_node));
+	new_node->key = strdup(key);
+	new_node->value = strdup(value);
+	new_node->prev = new_node;
+	new_node->next = new_node;
+
+	return (new_node);
+}
+
+void free_node(dliststr_node_t *node)
+{
+	free(node->key);
+	free(node->value);
+	free(node);
+}
+
+void print_dliststr(dliststr_t *list)
 {
 	size_t len = 0;
-	dlistint_node_t *node;
+	dliststr_node_t *node;
 
 	node = list->head;
 	while (len < list->length)
 	{
-		printf("%d\n", node->n);
+		printf("%s\n", node->value);
 		node = node->next;
 		len = len + 1;
 	}
-	return (len);
 }
 
-size_t rev_print_dlistint(dlistint_t *list)
+void rev_print_dliststr(dliststr_t *list)
 {
 	size_t len = 0;
-	dlistint_node_t *node;
+	dliststr_node_t *node;
 
 	if (list->length == 0)
 	{
-		return (0);
+		return;
 	}
 
 	node = list->head->prev;
 	while (len < list->length)
 	{
-		printf("%d\n", node->n);
+		printf("%s\n", node->value);
 		node = node->prev;
 		len = len + 1;
 	}
-
-  return (len);
 }
 
 /**
@@ -45,29 +62,20 @@ size_t rev_print_dlistint(dlistint_t *list)
  * @n: value
  * Return: address
  */
-dlistint_node_t *add_dnodeint(dlistint_t *list, const int n)
+dliststr_node_t *add_dnodestr_in_front(dliststr_t *list, char *key, char *value)
 {
-	dlistint_node_t *new_node;
+	dliststr_node_t *new_node;
 
 	if (list == NULL)
 	{
 		return (NULL);
 	}
-	
-	if (list->length == MAX_LENGTH)
-	{
-		return (NULL);
-	}
-	
-	new_node = malloc(sizeof(*new_node));
+
+	new_node = create_node(key, value);
 	if (!new_node)
 	{
 		return (NULL);
 	}
-	
-	new_node->n = n;
-	new_node->prev = new_node;
-	new_node->next = new_node;
 
 	if (list->head)
 	{
@@ -83,10 +91,10 @@ dlistint_node_t *add_dnodeint(dlistint_t *list, const int n)
 	return (new_node);
 }
 
-int delete_dnodeint_at_index(dlistint_t *list, unsigned int index)
+int delete_dnodestr_at_index(dliststr_t *list, unsigned int index)
 {
 	unsigned int i = 0;
-	dlistint_node_t *current;
+	dliststr_node_t *current;
 
 	if (!list)
 	{
@@ -113,7 +121,7 @@ int delete_dnodeint_at_index(dlistint_t *list, unsigned int index)
 				current->next->prev = current->prev;
 			}
 
-			free(current);
+			free_node(current);
 			list->length = list->length - 1;
 			return (1);
 		}
@@ -124,13 +132,13 @@ int delete_dnodeint_at_index(dlistint_t *list, unsigned int index)
 	return (-1);
 }
 
-void delete_last_dnodeint(dlistint_t *list)
+void delete_last_dnodestr(dliststr_t *list)
 {
-	dlistint_node_t *to_delete;
+	dliststr_node_t *to_delete;
 	
 	if (list->head->prev == list->head)
 	{
-		free(list->head);
+		free_node(list->head);
 		list->head = NULL;
 		list->length = list->length - 1;
 		return ;
@@ -139,14 +147,17 @@ void delete_last_dnodeint(dlistint_t *list)
 	to_delete = list->head->prev;
 	list->head->prev = to_delete->prev;
 	to_delete->prev->next = list->head;
+	free_node(to_delete);
 	list->length = list->length - 1;
 }
 
-void move_dnodeint_to_front(dlistint_t *list, dlistint_node_t *node)
+void move_dnodestr_to_front(dliststr_t *list, dliststr_node_t *node)
 {
-	dlistint_node_t *prev;
-	dlistint_node_t *next;
-	dlistint_node_t *last;
+	dliststr_node_t *prev;
+	dliststr_node_t *next;
+	dliststr_node_t *last;
+
+	printf("head: %p -> node: %p\n", list->head, node);
 
 	if (list->head == NULL || node == NULL || list->head == node)
 	{

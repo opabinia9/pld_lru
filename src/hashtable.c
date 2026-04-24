@@ -73,7 +73,7 @@ unsigned long int key_index(const unsigned char *key, unsigned long int size)
  * @value: value for entry
  * Return: 1 on success otherwise 0
  */
-int hash_table_set(hash_table_t *ht, const char *key, const char *value)
+int hash_table_set(hash_table_t *ht, const char *key, dliststr_node_t *value)
 {
 	int idx;
 	hash_node_t *node;
@@ -85,7 +85,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	if (node == NULL)
 		return (0);
 	node->key = strdup(key);
-	node->value = strdup(value);
+	node->value = value;
 	node->next = NULL;
 
 	idx = key_index((const unsigned char *)key, ht->size);
@@ -120,7 +120,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
  * @key: the key you are looking for
  * Return: value aociated with key or NULL on fail
  */
-char *hash_table_get(const hash_table_t *ht, const char *key)
+dliststr_node_t *hash_table_get(const hash_table_t *ht, const char *key)
 {
 	unsigned long int idx;
 	hash_node_t *lhead;
@@ -145,7 +145,7 @@ char *hash_table_get(const hash_table_t *ht, const char *key)
  * hash_table_print - print a hash table;
  * @ht: hash table to print
  */
-size_t hash_table_print(const hash_table_t *ht)
+void hash_table_print(const hash_table_t *ht)
 {
 	size_t idx = 0;
 	int i = 0;
@@ -160,7 +160,7 @@ size_t hash_table_print(const hash_table_t *ht)
 		{
 			if (i)
 				printf(", ");
-			printf("'%s': '%s'", lhead->key, lhead->value);
+			printf("'%s': '%s'", lhead->key, lhead->value->value);
 			lhead = lhead->next;
 			i = 1;
 		}
@@ -168,7 +168,6 @@ size_t hash_table_print(const hash_table_t *ht)
 	}
 
 	printf("}");
-	return (idx);
 }
 
 /**
@@ -195,4 +194,9 @@ void hash_table_delete(hash_table_t *ht)
 	}
 	free(ht->array);
 	free(ht);
+}
+
+void hash_table_remove_element(char *key)
+{
+	// TODO
 }
